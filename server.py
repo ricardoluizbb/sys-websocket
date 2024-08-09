@@ -10,7 +10,8 @@ async def send_time():
     while True:
         current_time = datetime.datetime.now().isoformat()
         if connected_clients:
-            await asyncio.wait([client.send(current_time) for client in connected_clients])
+            tasks = [asyncio.create_task(client.send(current_time)) for client in connected_clients]
+            await asyncio.gather(*tasks)
         await asyncio.sleep(1)
 
 async def handle_client(websocket, path):
@@ -39,10 +40,13 @@ def fibonacci(n):
             a, b = b, a + b
         return b
 
-start_server = websockets.serve(handle_client, "0.0.0.0", 8000)
+start_server = websockets.serve(handle_client, "localhost", 8000)
 
+# Sobe as tabelas
 loop = asyncio.get_event_loop()
 loop.run_until_complete(init_db())
+
+# Métodos restantes
 loop.run_until_complete(start_server)
 loop.create_task(send_time())
 loop.run_forever()

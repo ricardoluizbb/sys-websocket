@@ -3,10 +3,10 @@ import os
 
 async def init_db():
     conn = await asyncpg.connect(
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        database=os.getenv("POSTGRES_DB"),
-        host='db'
+        user="user",
+        password="password",
+        database="websocket_db",
+        host='localhost'
     )
     await conn.execute('''
         CREATE TABLE IF NOT EXISTS connected_users (
@@ -19,10 +19,10 @@ async def init_db():
 
 async def add_user(user_id):
     conn = await asyncpg.connect(
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        database=os.getenv("POSTGRES_DB"),
-        host='db'
+        user="user",
+        password="password",
+        database="websocket_db",
+        host='localhost'
     )
     await conn.execute('''
         INSERT INTO connected_users(user_id) VALUES($1)
@@ -32,10 +32,10 @@ async def add_user(user_id):
 
 async def remove_user(user_id):
     conn = await asyncpg.connect(
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        database=os.getenv("POSTGRES_DB"),
-        host='db'
+        user="user",
+        password="password",
+        database="websocket_db",
+        host='localhost'
     )
     await conn.execute('''
         DELETE FROM connected_users WHERE user_id = $1

@@ -1,18 +1,16 @@
-version: '3.8'
+version: "3.7"
 
 services:
-  app:
-    build: .
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-
-  db:
+  postgresx:
     image: postgres:13
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: websocket_db
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=websocket_db
+    networks:
+      - intranet
+
+networks:
+  intranet:
